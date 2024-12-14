@@ -1,5 +1,5 @@
 #import <AltList/LSApplicationProxy+AltList.h>
-#import <Foundation/NSValue.h>
+#import <Foundation/Foundation.h>
 #import <MobileCoreServices/LSApplicationProxy.h>
 #import <MobileCoreServices/LSApplicationWorkspace.h>
 #import <RemoteLog.h>
