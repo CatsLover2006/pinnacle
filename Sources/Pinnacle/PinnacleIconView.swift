@@ -17,6 +17,7 @@ class PinnacleIconView: SBIconView {
         setupCommonProperties(xDir: xDir, yDir: yDir, bundle: bundle, parentBundle: parentBundle, index: index)
 
         self.icon = fromIconView.icon
+        self.setAllowsLabelArea(TweakPreferences.shared.settings.showAppLabels)
 
         if isEditing {
             self.gestureRecognizers = []

@@ -19,6 +19,7 @@ final class TweakPreferences {
 
 struct Settings: Codable {
     var enabled = true
+    var showAppLabels = true
     var fadeDuration = 0.2
     var fadeAmount = 0.3
     var iconMoveDuration = 0.5

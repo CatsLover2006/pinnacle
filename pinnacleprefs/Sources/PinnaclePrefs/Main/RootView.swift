@@ -31,6 +31,7 @@ struct RootView: View {
 
             Section {
                 Toggle("Enabled", isOn: $preferenceStorage.isEnabled)
+                Toggle("Show App Labels", isOn: $preferenceStorage.showAppLabels)
             }
 
             Section {
