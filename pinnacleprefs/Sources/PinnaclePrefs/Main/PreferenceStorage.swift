@@ -6,7 +6,7 @@ final class PreferenceStorage: ObservableObject {
     static let registry: String = jbRootPath("/var/mobile/Library/Preferences/dev.rugmj.pinnacleprefs.plist")
 
     @Published(key: "enabled",    registry: registry) var isEnabled: Bool = true
-    @Published(key: "showAppLabels",    registry: registry) var isEnabled: Bool = true
+    @Published(key: "showAppLabels",    registry: registry) var showAppLabels: Bool = true
     @Published(key: "fadeAmount", registry: registry) var fadeAmount: Double = 0.3
     @Published(key: "fadeDuration", registry: registry) var fadeDuration: Double = 0.2
     @Published(key: "iconMoveDuration", registry: registry) var iconMoveDuration: Double = 0.5
