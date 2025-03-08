@@ -39,6 +39,16 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         target.addGestureRecognizer(swipeGesture)
         scrollViewPanGesture?.require(toFail: swipeGesture)
+        
+        if settings!.activationGestureDirection == "both" {
+            let secondSwipeGesture = UISwipeGestureRecognizer()
+            secondSwipeGesture.direction = .up
+            
+            secondSwipeGesture.addTarget(target, action: #selector(_pinnacleHandleActivation))
+            
+            target.addGestureRecognizer(secondSwipeGesture)
+            scrollViewPanGesture?.require(toFail: secondSwipeGesture)
+        }
     }
 
     // orion:new

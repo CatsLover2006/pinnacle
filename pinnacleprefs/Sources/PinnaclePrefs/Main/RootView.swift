@@ -41,6 +41,7 @@ struct RootView: View {
             Section {
                 Picker("Gesture Direction", selection: $preferenceStorage.activationGestureDirection) {
                     Text("Up").tag("up")
+                    Text("Both").tag("both")
                     Text("Down").tag("down")
                 }.pickerStyle(.segmented)
 

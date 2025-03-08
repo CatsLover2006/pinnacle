@@ -18,7 +18,7 @@ class Pinnacle: Tweak {
             })
         }, name, nil, .deliverImmediately)
 
-        if settings!.activationGestureDirection == "down" {
+        if settings!.activationGestureDirection != "up" {
             SpotlightHookGroup().activate()
         }
     }
