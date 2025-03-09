@@ -26,7 +26,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         guard !target.isKind(of: PinnacleIconView.classForCoder()) else { return }
         
-        if (!hasInit) {
+        if (grabberView == nil) {
             let iconSize = _pinnacleGetImageSize()
             
             grabberView = UIImageView(frame: CGRectMake(iconSize.width * -0.06, iconSize.height * -0.06, iconSize.width * 1.12, iconSize.height * 1.12))
