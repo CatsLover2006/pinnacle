@@ -225,13 +225,12 @@ class SBIconViewHook: ClassHook<SBIconView> {
                 }
         }
         
-        if icon!.applicationBundleID() != nil {
-            _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
-        } else {
-            self.grabberView!.image = nil
-        }
-        
         if (self.grabberView != nil) {
+            if icon!.applicationBundleID() != nil {
+                _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
+            } else {
+                self.grabberView!.image = nil
+            }
             target.sendSubviewToBack(self.grabberView!)
             UIView.animate(
                 withDuration: settings!.iconMoveDuration,
