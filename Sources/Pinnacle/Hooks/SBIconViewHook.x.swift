@@ -105,7 +105,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
     }
 
     // orion:new
-    @objc func _pinnacleHandleActivation() { 
+    @objc func _pinnacleHandleActivation() {
         guard !target.isFolderIcon() else { return }
         guard !active else { return }
         active = true
@@ -244,11 +244,9 @@ class SBIconViewHook: ClassHook<SBIconView> {
         }
         
         
-        for subview in target.subviews {
-            if let iconView = subview as? PinnacleIconView {
-                iconView._pinnacleReset()
-            }
-        }
+        _pinnacleForSubviews({(iconView: PinnacleIconView) -> Void in
+            iconView._pinnacleReset()
+        })
         
     }
 
