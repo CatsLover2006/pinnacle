@@ -217,6 +217,10 @@ class SBIconViewHook: ClassHook<SBIconView> {
         
         guard !target.icon.isKind(of: SBWidgetIcon.classForCoder()) else { return }
         
+        if target.isFolderIcon() && grabberView != nil {
+            grabberView?.image = nil
+        }
+        
         if let x = originalX, let y = originalY {
             UIView.animate(
                 withDuration: settings!.iconMoveDuration,
