@@ -26,9 +26,9 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         guard !target.isKind(of: PinnacleIconView.classForCoder()) else { return }
         
-        let iconSize = _pinnacleGetImageSize()
-        
-        if (grabberView == nil) {
+        if (!hasInit) {
+            let iconSize = _pinnacleGetImageSize()
+            
             grabberView = UIImageView(frame: CGRectMake(iconSize.width * -0.06, iconSize.height * -0.06, iconSize.width * 1.12, iconSize.height * 1.12))
             grabberView?.isUserInteractionEnabled = false
             grabberView?.contentMode = .scaleAspectFit
@@ -38,7 +38,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
         
         _pinnacleUpdateIndicator(bundleID: icon!.applicationBundleID())
         
-        if (!target.subviews.contains(grabberView!)) {
+        if (!hasInit) {
             target.addSubview(grabberView!)
         }
         target.sendSubviewToBack(grabberView!)
@@ -73,7 +73,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
     // orion:new
     func _pinnacleUpdateIndicator(bundleID: String) {
         if settings!.indicator == "none" {
-            grabberView!.image = nil
+            grabberView?.image = nil
             return
         }
         
@@ -95,13 +95,13 @@ class SBIconViewHook: ClassHook<SBIconView> {
                 if settings!.indicator == "apps" {
                     // TODO: App previews
                 } else {
-                    grabberView!.image = UIImage(contentsOfFile: grabberPath())
+                    grabberView?.image = UIImage(contentsOfFile: grabberPath())
                     return
                 }
             }
         }
         
-        grabberView!.image = nil
+        grabberView?.image = nil
     }
 
     // orion:new
@@ -225,11 +225,11 @@ class SBIconViewHook: ClassHook<SBIconView> {
                 }
         }
         
-        if (self.grabberView != nil) {
+        if self.grabberView != nil {
             if icon!.applicationBundleID() != nil {
                 _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
             } else {
-                self.grabberView!.image = nil
+                self.grabberView?.image = nil
             }
             target.sendSubviewToBack(self.grabberView!)
             UIView.animate(
