@@ -100,6 +100,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
                 }
             }
         }
+        
         grabberView!.image = nil
     }
 
@@ -210,7 +211,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
         })
         
         guard !target.icon.isKind(of: SBWidgetIcon.classForCoder()) else { return }
-
+        
         if let x = originalX, let y = originalY {
             UIView.animate(
                 withDuration: settings!.iconMoveDuration,
@@ -226,22 +227,23 @@ class SBIconViewHook: ClassHook<SBIconView> {
         
         if icon!.applicationBundleID() != nil {
             _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
-            if (self.grabberView != nil) {
-                target.sendSubviewToBack(self.grabberView!)
-            }
+        } else {
+            self.grabberView!.image = nil
         }
         
-        UIView.animate(
-            withDuration: settings!.iconMoveDuration,
-            delay: 0,
-            usingSpringWithDamping: settings!.springDamping,
-            initialSpringVelocity: settings!.springInitialVelocity
-        )
-        {
-            if (self.grabberView != nil) {
+        if (self.grabberView != nil) {
+            target.sendSubviewToBack(self.grabberView!)
+            UIView.animate(
+                withDuration: settings!.iconMoveDuration,
+                delay: 0,
+                usingSpringWithDamping: settings!.springDamping,
+                initialSpringVelocity: settings!.springInitialVelocity
+            )
+            {
                 self.grabberView?.alpha = 1
             }
         }
+        
         
         for subview in target.subviews {
             if let iconView = subview as? PinnacleIconView {
