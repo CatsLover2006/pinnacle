@@ -16,7 +16,12 @@ class SBIconViewHook: ClassHook<SBIconView> {
     func didMoveToSuperview() {
         orig.didMoveToSuperview()
 
-        guard !target.isFolderIcon() else { return }
+        guard !target.isFolderIcon() else {
+            if grabberView != nil {
+                grabberView?.image = nil
+            }
+            return
+        }
         guard target.icon != nil else { return }
         guard target.icon.isKind(of: SBApplicationIcon.classForCoder()) else { return }
         icon = target.icon as? SBApplicationIcon
