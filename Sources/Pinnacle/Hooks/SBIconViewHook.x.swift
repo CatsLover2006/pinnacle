@@ -31,6 +31,10 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         guard !target.isKind(of: PinnacleIconView.classForCoder()) else { return }
         
+        if grabberImage == nil {
+            grabberImage = UIImage(contentsOfFile: grabberPath())
+        }
+        
         if grabberView == nil {
             let iconSize = _pinnacleGetImageSize()
             
@@ -100,7 +104,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
                 if settings!.indicator == "apps" {
                     // TODO: App previews
                 } else {
-                    grabberView?.image = UIImage(contentsOfFile: grabberPath())
+                    grabberView?.image = grabberImage
                     return
                 }
             }

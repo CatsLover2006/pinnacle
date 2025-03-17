@@ -102,3 +102,5 @@ func normalise(_ number: Int) -> Int {
 }
 
 var settings: Settings?
+
+var grabberImage: UIImage? = nil
