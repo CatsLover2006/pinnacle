@@ -19,7 +19,6 @@ class SBIconViewHook: ClassHook<SBIconView> {
         guard !target.isFolderIcon() else {
             if grabberView != nil {
                 grabberView?.removeFromSuperview()
-                grabberView = nil // ARC will catch this
             }
             return
         }
@@ -44,7 +43,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
         
         _pinnacleUpdateIndicator(bundleID: icon!.applicationBundleID())
         
-        if (!hasInit) {
+        if !grabberView!.isDescendant(of: target) {
             target.addSubview(grabberView!)
         }
         target.sendSubviewToBack(grabberView!)
@@ -234,8 +233,10 @@ class SBIconViewHook: ClassHook<SBIconView> {
         if self.grabberView != nil {
             if target.isFolderIcon() {
                 self.grabberView?.removeFromSuperview()
-                self.grabberView = nil // ARC will catch this
             } else {
+                if !self.grabberView!.isDescendant(of: target) {
+                    target.addSubview(self.grabberView!)
+                }
                 if icon!.applicationBundleID() != nil {
                     _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
                 } else {
