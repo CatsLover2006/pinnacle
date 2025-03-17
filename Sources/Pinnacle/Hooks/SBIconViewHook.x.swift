@@ -18,7 +18,8 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         guard !target.isFolderIcon() else {
             if grabberView != nil {
-                grabberView?.image = nil
+                grabberView?.removeFromSuperview()
+                grabberView = nil // ARC will catch this
             }
             return
         }
@@ -31,7 +32,7 @@ class SBIconViewHook: ClassHook<SBIconView> {
 
         guard !target.isKind(of: PinnacleIconView.classForCoder()) else { return }
         
-        if (grabberView == nil) {
+        if grabberView == nil {
             let iconSize = _pinnacleGetImageSize()
             
             grabberView = UIImageView(frame: CGRectMake(iconSize.width * -0.06, iconSize.height * -0.06, iconSize.width * 1.12, iconSize.height * 1.12))
@@ -217,10 +218,6 @@ class SBIconViewHook: ClassHook<SBIconView> {
         
         guard !target.icon.isKind(of: SBWidgetIcon.classForCoder()) else { return }
         
-        if target.isFolderIcon() && grabberView != nil {
-            grabberView?.image = nil
-        }
-        
         if let x = originalX, let y = originalY {
             UIView.animate(
                 withDuration: settings!.iconMoveDuration,
@@ -235,20 +232,25 @@ class SBIconViewHook: ClassHook<SBIconView> {
         }
         
         if self.grabberView != nil {
-            if icon!.applicationBundleID() != nil {
-                _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
+            if target.isFolderIcon() {
+                self.grabberView?.removeFromSuperview()
+                self.grabberView = nil // ARC will catch this
             } else {
-                self.grabberView?.image = nil
-            }
-            target.sendSubviewToBack(self.grabberView!)
-            UIView.animate(
-                withDuration: settings!.iconMoveDuration,
-                delay: 0,
-                usingSpringWithDamping: settings!.springDamping,
-                initialSpringVelocity: settings!.springInitialVelocity
-            )
-            {
-                self.grabberView?.alpha = 1
+                if icon!.applicationBundleID() != nil {
+                    _pinnacleUpdateIndicator(bundleID: self.icon!.applicationBundleID())
+                } else {
+                    self.grabberView?.image = nil
+                }
+                target.sendSubviewToBack(self.grabberView!)
+                UIView.animate(
+                    withDuration: settings!.iconMoveDuration,
+                    delay: 0,
+                    usingSpringWithDamping: settings!.springDamping,
+                    initialSpringVelocity: settings!.springInitialVelocity
+                )
+                {
+                    self.grabberView?.alpha = 1
+                }
             }
         }
         
