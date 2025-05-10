@@ -69,14 +69,22 @@ class SBIconListViewHook: ClassHook<SBIconListView> {
     // orion:new
     func _pinnacleForIconViews(_ action:(SBIconView) -> Void) {
         var iconViews: [UIView]
+        remLog("entered for icon views")
+        remLog(target)
+        if target.subviews.isEmpty {
+            remLog("no subviews")
+            return
+        } // Test fix for folder crash bug
         if target.subviews[0].isKind(of: SBFTouchPassThroughView.classForCoder()) {
             iconViews = target.subviews[0].subviews
+            remLog("using nested subviews")
         } else {
             iconViews = target.subviews
         }
 
         iconViews.forEach({
             guard let iconView = $0 as? SBIconView else { return }
+            remLog(iconView)
             action(iconView)
         })
     }
