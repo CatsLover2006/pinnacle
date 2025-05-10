@@ -41,16 +41,19 @@ class SBIconViewHook: ClassHook<SBIconView> {
             grabberView = UIImageView(frame: CGRectMake(iconSize.width * -0.06, iconSize.height * -0.06, iconSize.width * 1.12, iconSize.height * 1.12))
             grabberView?.isUserInteractionEnabled = false
             grabberView?.contentMode = .scaleAspectFit
-            
-            grabberView?.alpha = 1
         }
         
+        grabberView?.alpha = 1
         _pinnacleUpdateIndicator(bundleID: icon!.applicationBundleID())
         
         if !grabberView!.isDescendant(of: target) {
             target.addSubview(grabberView!)
         }
         target.sendSubviewToBack(grabberView!)
+        
+        _pinnacleForSubviews({(iconView: PinnacleIconView) -> Void in
+            iconView.removeFromSuperview()
+        })
 
         guard !hasInit else { return }
         hasInit = true
